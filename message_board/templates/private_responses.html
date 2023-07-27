@@ -1,0 +1,60 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+<title>Responses</title>
+{% endblock title %}
+
+{% block content %}
+    {% if responses %}
+    <h1>All your responses</h1>
+    <h2>Quantity: {{ responses|length }}</h2>
+    <hr>
+        <table>
+            <tr>
+                <td>Announcement</td>
+                <td>Publication date</td>
+                <td>Preview</td>
+                <td>Actions</td>
+            </tr>
+            {% for response in responses %}
+            <tr>
+                <td>
+                    <a href="{% url 'announcement_detail' response.response_post.id %}">{{ response.response_post.head|censor }}</a>
+                </td>
+                <td>{{ response.time_add|date:'d.M.Y' }}</td>
+                <td>
+                    <a href="{% url 'response_detail' response.id %}">{{ response.text|truncatewords:20|censor }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'response_edit' response.id %}">Edit</a>
+                    <a href="{% url 'response_delete' response.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {# Информация о предыдущих страницах #}
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
+
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+    {% else %}
+        <h2>You haven't left any responses yet</h2>
+    {% endif %}
+{% endblock content %}

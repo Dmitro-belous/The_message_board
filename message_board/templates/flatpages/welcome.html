@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+<title>Message board</title>
+{% endblock title %}
+
+{% block content %}
+<br>
+{% if request.user.is_authenticated %}
+<h1 class="text-center">Welcome to the Message board, {{ request.user }}!</h1>
+{% else %}
+<h1 class="text-center">Welcome to the Message board!</h1>
+{% endif %}
+{% endblock content %}

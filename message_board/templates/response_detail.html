@@ -1,0 +1,22 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+<title>Response</title>
+{% endblock title %}
+
+{% block content %}
+<b>Author:</b>{{ response.response_user }}
+<b>Publication date:</b> {{ response.time_add|date:'d.M.Y' }}
+<br>
+<b>Text:</b> {{ response.text|censor }}
+<br>
+<br>
+{% if is_author and response.status %}
+    <b><i>Accepted</i></b>
+{% elif is_author %}
+    <p class="text-center"><a href="{% url 'accept' response.id %}" class="btn btn-secondary btn-sm">Accept</a></p>
+    <p class="text-center"><a href="{% url 'reject' response.id %}" class="btn btn-secondary btn-sm">Reject</a></p>
+{% endif %}
+{% endblock content %}

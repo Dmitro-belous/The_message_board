@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+<title>Announcement</title>
+{% endblock title %}
+
+{% block content %}
+{% if is_not_author and perms.board.add_response %}
+<a href="{% url 'response_create' announcement.id %}">Leave a response</a>
+{% endif %}
+<br>
+<b>Author:</b> {{ announcement.author }}
+<h2>{{ announcement.head|censor }}</h2>
+{% if announcement.image %}
+<img src="{{ announcement.image.url }}" alt="connect" style="max-height:300px">
+{% endif %}
+<br>
+{{ announcement.time_add|date:'d.M.Y' }}
+{{ announcement.body|censor }}
+<br>
+{% if announcement.file %}
+<a href="{{ announcement.file.url }}">{{ announcement.file.name }}</a>
+{% endif %}
+<hr>
+{% if responses %}
+<h3>There are {{ responses|length }} responses</h3>
+<a href="{% url 'response_list' announcement.id %}">View all responses</a>
+{% else %}
+<h2>There are no responses yet</h2>
+{% endif %}
+{% endblock content %}
